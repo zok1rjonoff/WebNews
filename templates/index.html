@@ -1,0 +1,33 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Advanced News Site</title>
+</head>
+<body>
+    <header>
+        <h1>Welcome to Our Advanced News Site</h1>
+    </header>
+
+    <nav>
+        {% for item in categories_list %}
+            <a href="#">{{ item.category_title }}</a>
+        {% endfor %}
+    </nav>
+
+    <section>
+        {% for news in news_list %}
+            <article>
+                <h2>{{ news.news_title }}</h2>
+                <p style="width:300px">{{ news.news_description }}</p>
+                <img src="{{ news.news_image.url }}">
+                <h4>{{ news.news_image }}</h4>
+            </article>
+        {% endfor %}
+    </section>
+
+</body>
+</html>
