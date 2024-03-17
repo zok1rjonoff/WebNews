@@ -19,11 +19,13 @@ from django.urls import path
 from django.conf.urls.static import static
 from django.conf import settings
 
-from newsInfo.views import all_news
+from newsInfo.views import all_news, Login, logout_view
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path("", all_news, name="all_news"),
+    path('login/', Login.as_view()),
+    path('logout/', logout_view),
 
 ]
 

@@ -18,6 +18,11 @@
         {% for item in categories_list %}
             <a href="#">{{ item.category_title }}</a>
         {% endfor %}
+        {% if user.is_authenticated %}
+                <a href="/logout"><i class="fa fa-commenting-o"></i>Logout {{ user.username }}</a>
+        {% else %}
+                <a href="/login"><i class="fa fa-commenting-o"></i>login</a>
+        {% endif %}
     </nav>
 
     <section>
