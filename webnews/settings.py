@@ -36,6 +36,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     "newsInfo",
+    # "django.contrib.staticfiles",
 ]
 
 MIDDLEWARE = [
@@ -113,7 +114,7 @@ USE_TZ = True
 STATIC_URL = 'static/'
 # STATIC_ROOT = BASE_DIR / 'static'
 #
-# STATICFILES_DIRS = BASE_DIR / "assets"
+# STATICFILES_DIRS = (os.path.join(BASE_DIR / "assets",),)
 
 
 MEDIA_URL = 'media/'

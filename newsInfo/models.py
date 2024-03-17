@@ -27,5 +27,5 @@ class NewsModel(models.Model):
 
     class Meta:
         # strictly in order
-        verbose_name = "News",
+        verbose_name = "News"
         verbose_name_plural = "News info"
