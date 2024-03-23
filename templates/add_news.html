@@ -25,6 +25,18 @@ background-position:center;">
             </div>
         </div>
         <div>
+            <div style="display:flex;" class="form-group">
+                <div style="color:white;">
+                    <label style="color:white;">News Category:</label>
+                </div>
+                <div>
+                    <select name="cars">
+                        {% for i in category %}
+                            <option value="{{ i.id }}">{{ i.category_title }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
         </div>
         <div>
             <div style="display:flex;" class="form-group">
