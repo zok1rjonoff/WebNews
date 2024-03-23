@@ -19,14 +19,19 @@ from django.urls import path
 from django.conf.urls.static import static
 from django.conf import settings
 
-from newsInfo.views import all_news, Login, logout_view
+from newsInfo.views import *
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path("", all_news, name="all_news"),
+    path("", HomePage.as_view(), name="all_news"),
+    path("category/<int:pk>", CategoriesPage.as_view()),
+    path("news/<int:pk>", NewsPage.as_view()),
+    path("add_news/", get_insert, name="insert"),
+    path("insert/", add_news),
     path('login/', Login.as_view()),
     path('logout/', logout_view),
 
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

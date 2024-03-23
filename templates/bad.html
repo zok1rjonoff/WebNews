@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Category</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body style="margin:0;padding:0;background-image:url('/media/image/orqa1.jpeg');background-size:cover;
+background-position:center;">
+    <header>
+        <div style="margin-top:10px;display:flex;">
+            <div>
+                <img src="/media/image/OIP.jpeg" style="border-radius:50%;
+        border:2px solid black;margin-bottom:10px;margin-left:20px; width:100px;height:100px">
+            </div>
+            <div style="margin-left:20px;padding-top:29px; font-family:Stencil Std, fantasy">
+                <h3>The Enlightened Insightful Gazette</h3>
+            </div>
+        </div>
+    </header>
+
+    {% if categories_page %}
+<div style="margin-left:5px;margin-right:10px;margin-top:20px;display:flex;" class="container" >
+        {% for news in categories_page %}
+        <div class="bg-secondary"style="margin-right:5px;">
+            <div style="flex:1;">
+                <div style="width:200px;height:100px;">
+                    <img style="width:200px;height:100px;" src="{{ news.news_image.url }}">
+                </div>
+                <div style="width:200px;height:60px;" >
+                    <h6 style="font-family:URW Chancery L, cursive;font-size:12px;width:200px;height:60px;">{{ news.news_title }}</h6>
+                </div>
+                <div style="display:flex; justify-content:space-between;">
+                    <div class="btn btn-primary" style="margin-left:5px;margin-bottom:5px; width:74px;height:30px;">
+                        <a href="/category/{{ news.news_category.id }}"><h6 style="font-family:Apple Chancery, cursive;color:white;font-size:9px;">{{news.news_category}}</h6></a>
+                    </div>
+                    <div class="btn btn-primary" style="text-align:center;margin-right:5px;margin-bottom:5px;width:55px;height:30px;">
+                        <a href="/news/{{ news.pk }}"><h6 style="font-family:Apple Chancery, cursive;color:white; font-size:9px;">Expand</h6></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+<div class="pagination" style="margin-top:50px;margin-left:420px;">
+    <div class="step-links" style="display:flex;background-color:white;">
+        {% if page_obj.has_previous %}
+            <a style="font-family:Apple Chancery, cursive;background-color:white;" class="nav-link" href="?page=1">&laquo; first</a>
+            <a style="font-family:Apple Chancery, cursive;background-color:white;" class="nav-link" href="?page={{ page_obj.previous_page_number }}">previous</a>
+        {% endif %}
+
+
+
+        <h6 class="nav-link" style="background-color:white;font-family:Apple Chancery, cursive;color:blue;">Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.</h6>
+
+        {% if page_obj.has_next %}
+            <a style="background-color:white;font-family:Apple Chancery, cursive;" class="nav-link" href="?page={{ page_obj.next_page_number }}">next</a>
+            <a style="background-color:white;font-family:Apple Chancery, cursive;" class="nav-link" href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
+        {% endif %}
+    </div>
+</div>
+
+{% else %}
+<style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            color: #333;
+            background-image:url('/media/image/Untitled.png');
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 800px;
+            margin: 50px auto;
+            text-align: center;
+        }
+        h1 {
+            font-size: 36px;
+            margin-bottom: 20px;
+            color: #d9534f;
+        }
+        p {
+            font-size: 18px;
+            line-height: 1.5;
+            margin-bottom: 20px;
+        }
+        a {
+            color: #337ab7;
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+    </style>
+    <div class="container">
+        <h1 class="p-3 mb-2 bg-light text-dark">404 - Page Not Found</h1>
+        <p class="p-3 mb-2 bg-light text-dark" style="color:white;">Sorry, the page you are looking for does not exist.</p>
+        <p class="p-3 mb-2 bg-light text-dark" style="color:white;">Go back to <a class="text-warning"  style="background-color:white;" href="/">home</a>.</p>
+    </div>
+{% endif %}
+
+</body>
+</html>

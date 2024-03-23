@@ -5,35 +5,114 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+
 <!--    <link rel="stylesheet" href="{% static 'style.css' %}">-->
 
     <title>Advanced News Site</title>
 </head>
-<body>
+<body class="main" style="margin:0;padding:0;background-image:url('media/image/orqa1.jpeg');background-size:cover;
+background-position:center;">
     <header>
-        <h1>Welcome to Our Advanced News Site</h1>
+        <div style="margin-top:10px;display:flex;">
+            <div>
+                <img src="media/image/OIP.jpeg" style="border-radius:50%;
+        border:2px solid black;margin-bottom:10px;margin-left:20px; width:100px;height:100px">
+            </div>
+            <div style="margin-left:20px;padding-top:29px; font-family:Stencil Std, fantasy">
+                <h3>The Enlightened Insightful Gazette</h3>
+            </div>
+            <div>
+                <a href="/add_news/" class="btn btn-success" style="margin-left:450px;margin-top:29px;">Add News </a>
+            </div>
+        </div>
+
+
     </header>
 
-    <nav>
+    <nav class="navbar navbar-light" style="background-color: #e3f2fd;">
         {% for item in categories_list %}
-            <a href="#">{{ item.category_title }}</a>
+        <div class="">
+            <a style="font-family:New Century Schoolbook, TeX Gyre Schola, serif" href="/category/{{ item.id }}">{{ item.category_title }}</a>
+        </div>
         {% endfor %}
         {% if user.is_authenticated %}
-                <a href="/logout"><i class="fa fa-commenting-o"></i>Logout {{ user.username }}</a>
+                <a style="font-family:New Century Schoolbook, TeX Gyre Schola, serif" href="/logout"><i class="fa fa-commenting-o"></i>Logout {{ user.username }}</a>
         {% else %}
-                <a href="/login"><i class="fa fa-commenting-o"></i>login</a>
+                <a style="font-family:New Century Schoolbook, TeX Gyre Schola, serif" href="/login"><i class="fa fa-commenting-o"></i>login</a>
         {% endif %}
     </nav>
 
-    <section>
+    <div style="margin-left:5px;margin-right:10px;margin-top:20px;display:flex;" class="container" >
         {% for news in news_list %}
-            <article>
-                <h2>{{ news.news_title }}</h2>
-                <p style="width:300px">{{ news.news_description }}</p>
-                <img src="{{ news.news_image.url }}">
-            </article>
-        {% endfor %}
-    </section>
+        {% if news in page_obj %}
+        <div class="bg-secondary"style="margin-right:23px;">
+            <div style="flex:1;">
+                <div style="width:200px;height:100px;">
+                    <img style="text-align:center;width:200px;height:100px;" src="{{ news.news_image.url }}">
+                </div>
+                <div style="width:200px;height:100px;" >
+                    <h6 style="text-align:center;font-family:URW Chancery L, cursive;font-size:12px;width:200px;height:100px;">{{ news.news_title }}</h6>
+                </div>
+                <div style="display:flex; justify-content:space-between;">
+                    <div class="btn btn-primary" style="margin-left:5px;margin-bottom:5px; width:74px;height:30px;">
+                        <a href="/category/{{ news.news_category.id }}"><h6 style="text-align:center;margin-top:-3px;font-family:Apple Chancery, cursive;color:white;font-size:9px;">{{news.news_category}}</h6></a>
+                    </div>
+                    <div class="btn btn-primary" style="text-align:center;text-align:center;margin-right:5px;margin-bottom:5px;width:55px;height:30px;">
+                        <a href="/news/{{ news.pk }}"><h6 style="font-family:Apple Chancery, cursive;color:white; font-size:9px;">Expand</h6></a>
+                    </div>
+                </div>
+            </div>
+            <h4 style="margin-left:3px;font-size:10px;color:white;">{{news.news_created_at}}</h4>
+        </div>
 
+        {% endif %}
+        {% endfor %}
+    </div>
+
+<div class="pagination" style="margin-top:50px;margin-left:420px;">
+    <div class="step-links" style="display:flex;background-color:white;">
+        {% if page_obj.has_previous %}
+            <a style="font-family:Apple Chancery, cursive;background-color:white;" class="nav-link" href="?page=1">&laquo; first</a>
+            <a style="font-family:Apple Chancery, cursive;background-color:white;" class="nav-link" href="?page={{ page_obj.previous_page_number }}">previous</a>
+        {% endif %}
+
+
+
+        <h6 class="nav-link" style="background-color:white;font-family:Apple Chancery, cursive;color:blue;">Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.</h6>
+
+        {% if page_obj.has_next %}
+            <a style="background-color:white;font-family:Apple Chancery, cursive;" class="nav-link" href="?page={{ page_obj.next_page_number }}">next</a>
+            <a style="background-color:white;font-family:Apple Chancery, cursive;" class="nav-link" href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
+        {% endif %}
+    </div>
+</div>
 </body>
+<footer>
+    <div class="footer-content">
+        <h4>Guess the Number</h4>
+        <p>Try to guess the number between 1 and 100:</p>
+        <input type="number" id="userGuess" placeholder="Enter your guess">
+        <button onclick="checkGuess()">Check</button>
+        <p id="result"></p>
+    </div>
+    <script>
+        // Generate a random number between 1 and 100
+        const randomNumber = Math.floor(Math.random() * 100) + 1;
+
+        function checkGuess() {
+            // Get the user's guess
+            const userGuess = parseInt(document.getElementById('userGuess').value);
+
+            // Check if the guess is correct
+            if (userGuess === randomNumber) {
+                document.getElementById('result').innerText = "Congratulations! You guessed the number!";
+            } else if (userGuess < randomNumber) {
+                document.getElementById('result').innerText = "Try a higher number.";
+            } else {
+                document.getElementById('result').innerText = "Try a lower number.";
+            }
+        }
+    </script>
+</footer>
 </html>
