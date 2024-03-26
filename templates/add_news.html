@@ -11,7 +11,7 @@
 <body style="margin:0;padding:0;background-image:url('/media/image/orqa1.jpeg');background-size:cover;
 background-position:center;">
 <div style="margin-top:50px;margin-left:320px;">
-    <form method="post" enctype="multipart/form-data    ">
+    <form method="post" enctype="multipart/form-data">
         {% csrf_token %}
         {{ form }}
         <div>
@@ -30,7 +30,7 @@ background-position:center;">
                     <label style="color:white;">News Category:</label>
                 </div>
                 <div>
-                    <select name="cars">
+                    <select name="news_category">
                         {% for i in category %}
                             <option value="{{ i.id }}">{{ i.category_title }}</option>
                         {% endfor %}

@@ -17,7 +17,7 @@ class CategoryModel(models.Model):
 
 class NewsModel(models.Model):
     news_title = models.TextField(help_text="Название товара")
-    news_category = models.ForeignKey(CategoryModel, on_delete=models.CASCADE)
+    news_category = models.ForeignKey(CategoryModel, on_delete=models.CASCADE, null=True, blank=True)
     news_description = models.TextField()
     news_image = models.FileField(upload_to="news_images")
     news_created_at = models.DateTimeField(auto_now_add=True)

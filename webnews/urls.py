@@ -26,8 +26,7 @@ urlpatterns = [
     path("", HomePage.as_view(), name="all_news"),
     path("category/<int:pk>", CategoriesPage.as_view()),
     path("news/<int:pk>", NewsPage.as_view()),
-    path("add_news/", get_insert, name="insert"),
-    path("insert/", add_news),
+    path("add_news/", VideoCreateView.as_view(), name='insert'),
     path('login/', Login.as_view()),
     path('logout/', logout_view),
 

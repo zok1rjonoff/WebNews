@@ -1,6 +1,8 @@
 from django.contrib.auth import logout
 from django.contrib.auth.views import LoginView
 from django.shortcuts import render, redirect
+from django.urls import reverse_lazy
+from django.views.generic import CreateView
 
 from newsInfo.forms import SearchForms, UploadImage
 from newsInfo.models import NewsModel, CategoryModel
@@ -71,22 +73,33 @@ def get_insert(request):
     return render(request, "add_news.html", {"category": category})
 
 
-def add_news(request):
-    if request.method == 'POST':
-        print("Hello")
-        news_title = request.POST.get('news_title')
-        print(news_title)
-        news_description = request.POST.get('news_description')
-        print(news_description)
-        form = UploadImage(request.POST, request.FILES)
-        if form.is_valid():
-            form = form.save(commit=False)
-            form.title = news_title
-            form.news_description = news_description
-            form.news_image = request.FILES['news_image']
-            form.save()
-            print(form.news_image)
+class VideoCreateView(CreateView):
+    model = NewsModel
+    fields = []
+    template_name = 'add_news.html'
+    success_url = reverse_lazy('all_news')
 
-        return render(request, 'add_news.html')  # Redirect to a success page after saving the news
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['category'] = CategoryModel.objects.all()
+        return context
 
-    return render(request, 'add_news.html')
+    def form_valid(self, form):
+        form.instance.user = self.request.user
+        news_title = self.request.POST.get('news_title')
+        news_category_id = self.request.POST.get('news_category')
+        news_image = self.request.FILES.get('news_image')
+        news_description = self.request.POST.get("news_description")
+
+        if news_image and news_category_id and news_title and news_description:
+            category_instance = CategoryModel.objects.get(pk=news_category_id)
+            form.instance.news_description = news_description
+            form.instance.news_image = news_image
+            form.instance.news_category = category_instance
+            form.instance.news_title = news_title
+            print('Success')
+        else:
+            return self.form_invalid(form)
+
+        form.save()
+        return super().form_valid(form)
