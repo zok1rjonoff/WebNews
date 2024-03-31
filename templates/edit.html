@@ -11,7 +11,7 @@
 <body style="margin:0;padding:0;background-image:url('/media/image/orqa1.jpeg');background-size:cover;
 background-position:center;">
 <div style="margin-top:50px;margin-left:320px;">
-    <form method="post" enctype="multipart/form-data">
+    <form method="post" enctype="multipart/form-data" action="/update/{{data.pk}}">
         {% csrf_token %}
         <div>
             <div style="display:flex;" class="form-group">
@@ -19,7 +19,7 @@ background-position:center;">
                     <label style="color:white;">News Title:</label>
                 </div>
                 <div>
-                    <textarea style="margin-left:83px;" class="form-control col-md-35" rows="5" name="news_title"></textarea>
+                    <textarea style="margin-left:83px;" class="form-control col-md-35" rows="5" name="news_title">{{data.news_title}}</textarea>
                 </div>
             </div>
         </div>
@@ -43,7 +43,8 @@ background-position:center;">
                     <label style="color:white;">News Description:</label>
                 </div>
                 <div>
-                    <textarea  style="margin-left:35px;" class="form-control col-md-35" rows="5" id="comment" name="news_description"></textarea>
+                    <textarea  style="margin-left:35px;" class="form-control col-md-35" rows="5" id="comment" name="news_description">{{data.news_description}}
+                    </textarea>
                 </div>
             </div>
         </div>
@@ -53,9 +54,11 @@ background-position:center;">
                     <label style="color:white;">News Image:</label>
                 </div>
                 <div>
-                    <input  type="file" name="news_image" style="margin-left:73px;">
+                    <input type="file" name="news_image" style="margin-left:73px;" src="/media/news_images/{{ data.news_image.url }}">
+<!--                    <h3>{{data.news_image.url}}</h3>-->
                 </div>
             </div>
+
         </div>
         <div style="display:flex;">
             <div class="btn btn-primary">

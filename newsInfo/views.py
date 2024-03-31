@@ -2,7 +2,7 @@ from django.contrib.auth import logout
 from django.contrib.auth.views import LoginView
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
-from django.views.generic import CreateView
+from django.views.generic import *
 
 from newsInfo.forms import SearchForms, UploadImage
 from newsInfo.models import NewsModel, CategoryModel
@@ -22,14 +22,6 @@ class HomePage(ListView):
         return context
 
 
-def all_news(request):
-    news_list = NewsModel.objects.all().order_by('id')
-    categories_list = CategoryModel.objects.all()
-    form = SearchForms
-    return render(request, "index.html",
-                  {"news_list": news_list, "categories_list": categories_list, "form": form})
-
-
 class CategoriesPage(ListView):
     form = SearchForms
     paginate_by = 5
@@ -39,7 +31,6 @@ class CategoriesPage(ListView):
 
     def get_queryset(self):
         value = self.kwargs.get("pk")
-
         query_set = NewsModel.objects.filter(news_category=value)
         return query_set
 
@@ -73,7 +64,7 @@ def get_insert(request):
     return render(request, "add_news.html", {"category": category})
 
 
-class VideoCreateView(CreateView):
+class ImageCreateView(CreateView):
     model = NewsModel
     fields = []
     template_name = 'add_news.html'
@@ -90,7 +81,6 @@ class VideoCreateView(CreateView):
         news_category_id = self.request.POST.get('news_category')
         news_image = self.request.FILES.get('news_image')
         news_description = self.request.POST.get("news_description")
-
         if news_image and news_category_id and news_title and news_description:
             category_instance = CategoryModel.objects.get(pk=news_category_id)
             form.instance.news_description = news_description
@@ -100,6 +90,42 @@ class VideoCreateView(CreateView):
             print('Success')
         else:
             return self.form_invalid(form)
+        form.save()
+        return super().form_valid(form)
 
+
+def delete_news(request, pk):
+    exist = NewsModel.objects.get(pk=pk)
+    exist.delete()
+    return redirect("/")
+
+
+def get_news_to_edit(request, pk):
+    exist = NewsModel.objects.get(pk=pk)
+    category = CategoryModel.objects.all()
+    return render(request, "edit.html", {"category": category, "data": exist})
+
+
+class UpdatedCreateView(UpdateView):
+    model = NewsModel
+    fields = []
+    template_name = 'edit.html'
+    success_url = reverse_lazy('all_news')
+
+    def form_valid(self, form):
+        form.instance.user = self.request.user
+        news_title = self.request.POST.get('news_title')
+        news_category_id = self.request.POST.get('news_category')
+        news_image = self.request.FILES.get('news_image')
+        news_description = self.request.POST.get("news_description")
+        if news_image and news_category_id and news_title and news_description:
+            category_instance = CategoryModel.objects.get(pk=news_category_id)
+            form.instance.news_description = news_description
+            form.instance.news_image = news_image
+            form.instance.news_category = category_instance
+            form.instance.news_title = news_title
+            print('Success')
+        else:
+            return self.form_invalid(form)
         form.save()
         return super().form_valid(form)

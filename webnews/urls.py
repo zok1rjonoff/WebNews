@@ -26,8 +26,12 @@ urlpatterns = [
     path("", HomePage.as_view(), name="all_news"),
     path("category/<int:pk>", CategoriesPage.as_view()),
     path("news/<int:pk>", NewsPage.as_view()),
-    path("add_news/", VideoCreateView.as_view(), name='insert'),
+    path("add_news/", ImageCreateView.as_view(), name='insert'),
     path('login/', Login.as_view()),
+    path('edit/<int:pk>', get_news_to_edit),
+    path('update/<int:pk>', UpdatedCreateView.as_view()),
+    # Delete is working successfully
+    path('delete/<int:pk>', delete_news),
     path('logout/', logout_view),
 
 ]
